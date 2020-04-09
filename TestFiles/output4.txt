@@ -1,0 +1,22 @@
+Segment with count: 1, left end: 11, right end: 111 contains 3 segments
+Segment with count: 1, left end: 14, right end: 52
+Segment with count: 1, left end: 22, right end: 55
+Segment with count: 1, left end: 51, right end: 53
+
+Segment with count: 1, left end: 15, right end: 152 contains 2 segments
+Segment with count: 1, left end: 22, right end: 55
+Segment with count: 1, left end: 51, right end: 53
+
+Segment with count: 1, left end: 22, right end: 55 contains 1 segments
+Segment with count: 1, left end: 51, right end: 53
+
+Segment with count: 1, left end: 24, right end: 242 contains 2 segments
+Segment with count: 1, left end: 42, right end: 155
+Segment with count: 1, left end: 51, right end: 53
+
+Segment with count: 1, left end: 42, right end: 155 contains 1 segments
+Segment with count: 1, left end: 51, right end: 53
+
+Segment with count: 1, left end: 42, right end: 242 contains 1 segments
+Segment with count: 1, left end: 51, right end: 53
+

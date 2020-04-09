@@ -1,0 +1,8 @@
+Segment with count: 2, left end: 1, right end: 55 contains 3 segments
+Segment with count: 3, left end: 2, right end: 44
+Segment with count: 1, left end: 5, right end: 22
+Segment with count: 1, left end: 11, right end: 44
+
+Segment with count: 3, left end: 2, right end: 44 contains 1 segments
+Segment with count: 1, left end: 5, right end: 22
+

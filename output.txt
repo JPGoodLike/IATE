@@ -1,0 +1,17 @@
+Segment with count: 1, left end: 5, right end: 20 contains 4 segments
+Segment with count: 1, left end: 6, right end: 19
+Segment with count: 1, left end: 8, right end: 14
+Segment with count: 1, left end: 10, right end: 12
+Segment with count: 2, left end: 10, right end: 16
+
+Segment with count: 1, left end: 6, right end: 19 contains 3 segments
+Segment with count: 1, left end: 8, right end: 14
+Segment with count: 1, left end: 10, right end: 12
+Segment with count: 2, left end: 10, right end: 16
+
+Segment with count: 1, left end: 8, right end: 14 contains 1 segments
+Segment with count: 1, left end: 10, right end: 12
+
+Segment with count: 1, left end: 11, right end: 40 contains 1 segments
+Segment with count: 1, left end: 30, right end: 35
+

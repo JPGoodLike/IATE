@@ -1,0 +1,13 @@
+Segment with count: 1, left end: 5, right end: 22 contains 2 segments
+Segment with count: 1, left end: 10, right end: 12
+Segment with count: 1, left end: 12, right end: 21
+
+Segment with count: 1, left end: 11, right end: 40 contains 2 segments
+Segment with count: 1, left end: 12, right end: 21
+Segment with count: 1, left end: 30, right end: 35
+
+Segment with count: 1, left end: 11, right end: 112 contains 3 segments
+Segment with count: 1, left end: 12, right end: 21
+Segment with count: 1, left end: 30, right end: 35
+Segment with count: 1, left end: 34, right end: 43
+
