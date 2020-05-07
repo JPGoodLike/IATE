@@ -1,0 +1,36 @@
+{
+    "path_vars": {
+        "workspace_root": "~/Desktop/dev/cpp/SFML/EarClipping"
+    },    
+    "source_files": [
+        "${workspace_root}/Main.cpp"
+    ],
+    "header_files": [
+        "${workspace_root}/**/*.hpp"
+    ],
+    "include_dirs": [
+        "${workspace_root}"
+    ],
+    "binary_files": [
+    ],
+    "debug": {
+        "build_dir": "${workspace_root}/build/debug",        
+        "executable_name": "Main_debug",
+        "compile_command": "g++ -c -g",
+        "compile_options": [],
+        "linking_command": "g++ -g",
+        "linking_options": [
+            "-lsfml-graphics", "-lsfml-window", "-lsfml-system"
+        ]
+    },
+    "release": {
+        "build_dir": "${workspace_root}/build/release",        
+        "executable_name": "Main",
+        "compile_command": "g++ -c",
+        "compile_options": [],
+        "linking_command": "g++",
+        "linking_options": [
+            "-lsfml-graphics", "-lsfml-window", "-lsfml-system"
+        ]
+    }
+}
