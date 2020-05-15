@@ -124,7 +124,7 @@ namespace mbgl {
             if (vertices.Size() < 3)
                 return;
 
-            // NormalizeOrder();
+            NormalizeOrder();
             
             triangles.clear();
 
@@ -225,43 +225,49 @@ namespace mbgl {
                 }
                 cTriangles.Remove(cTriangles.Root());
 
-                auto cNodeT = cTriangles.Root();
-                for (int i = 0; i < cTriangles.Size(); i++, cNodeT = cNodeT->Next()) {
-                    std::vector<CDLList<vec2>::CDLLNode*> commonPoints;
-                    commonPoints.reserve(2);
-                    vec2 remainingPoint;
-                    
-                    auto cNodeP = p.vertices.Root();
-                    for (int j = 0; j < p.vertices.Size(); j++, cNodeP = cNodeP->Next()) {
+                bool wasPolygonExtened = true;
+                while (wasPolygonExtened) {
+                    wasPolygonExtened = false;
+                    auto cNodeT = cTriangles.Root();
+                    for (int i = 0; i < cTriangles.Size(); i++, cNodeT = cNodeT->Next()) {
+                        std::vector<CDLList<vec2>::CDLLNode*> commonPoints;
+                        commonPoints.reserve(2);
+                        vec2 remainingPoint;
+                        
+                        auto cNodeP = p.vertices.Root();
+                        for (int j = 0; j < p.vertices.Size(); j++, cNodeP = cNodeP->Next()) {
+                            for (int k = 0; k < 3; k++) {
+                                if (cNodeT->Get().vertices[k] == cNodeP->Get()) {
+                                    commonPoints.push_back(cNodeP);
+                                }
+                            }
+                            if (commonPoints.size() == 2)
+                                break;
+                        }
+                        if (commonPoints.size() < 2)
+                            continue;
+                        
                         for (int k = 0; k < 3; k++) {
-                            if (cNodeT->Get().vertices[k] == cNodeP->Get()) {
-                                commonPoints.push_back(cNodeP);
+                            if (cNodeT->Get().vertices[k] != commonPoints[0]->Get() && cNodeT->Get().vertices[k] != commonPoints[1]->Get()) {
+                                remainingPoint = cNodeT->Get().vertices[k];
+                                break;
                             }
                         }
-                        if (commonPoints.size() == 2)
-                            break;
-                    }
-                    if (commonPoints.size() < 2)
-                        continue;
-                    
-                    for (int k = 0; k < 3; k++) {
-                        if (cNodeT->Get().vertices[k] != commonPoints[0]->Get() && cNodeT->Get().vertices[k] != commonPoints[1]->Get()) {
-                            remainingPoint = cNodeT->Get().vertices[k];
+
+                        if (commonPoints[0]->Back() == commonPoints[1]) {
+                            auto temp = commonPoints[0];
+                            commonPoints[0] = commonPoints[1];
+                            commonPoints[1] = temp;
+                        }
+
+                        bool isConvex1 = TreePointsCross(commonPoints[0]->Back()->Get(), commonPoints[0]->Get(), remainingPoint) >= 0;
+                        bool isConvex2 = TreePointsCross(remainingPoint, commonPoints[1]->Get(), commonPoints[1]->Next()->Get()) >= 0;
+                        if (isConvex1 && isConvex2) {
+                            p.vertices.InsertAfter(remainingPoint, commonPoints[0]);
+                            cTriangles.Remove(cNodeT);
+                            wasPolygonExtened = true;
                             break;
                         }
-                    }
-
-                    if (commonPoints[0]->Back() == commonPoints[1]) {
-                        auto temp = commonPoints[0];
-                        commonPoints[0] = commonPoints[1];
-                        commonPoints[1] = temp;
-                    }
-
-                    bool isConvex1 = TreePointsCross(commonPoints[0]->Back()->Get(), commonPoints[0]->Get(), remainingPoint) >= 0;
-                    bool isConvex2 = TreePointsCross(remainingPoint, commonPoints[1]->Get(), commonPoints[1]->Next()->Get()) >= 0;
-                    if (isConvex1 && isConvex2) {
-                        p.vertices.InsertAfter(remainingPoint, commonPoints[0]);
-                        cTriangles.Remove(cNodeT);
                     }
                 }
                 convexPolygons.push_back(p);
@@ -274,12 +280,12 @@ namespace mbgl {
             
         //     float sum = 0;
         //     auto cNode = vertices.Root();
-        //     for (int i = 0; i < vertices.Size(); i++) {
+        //     for (int i = 0; i < vertices.Size(); i++, cNode=cNode->Next()) {
         //         vec2 v1 = cNode->Back()->Get() - cNode->Get();
         //         vec2 v2 = cNode->Next()->Get() - cNode->Get();
         //         sum += v1.x * v2.y - v2.x * v1.y;
         //     }
-        //     // std::cout << sum << "\n";
+        //     std::cout << sum << "\n";
         //     if (sum < 0) {
         //         vertices = vertices.Reversed();
         //         return true;
@@ -293,12 +299,12 @@ namespace mbgl {
             
             float sum = 0;
             auto cNode = vertices.Root();
-            for (int i = 0; i < vertices.Size(); i++) {
+            for (int i = 0; i < vertices.Size(); i++, cNode = cNode->Next()) {
                 vec2 p1 = cNode->Get();
                 vec2 p2 = cNode->Next()->Get();
-                sum += (p2.x - p1.x) * (p2.y + p1.y);
+                sum -= p1.x * p2.y - p1.y * p2.x;
             }
-            std::cout << sum << "\n";
+            std::cout << "Area: " << sum << "\n";
             if (sum < 0) {
                 vertices = vertices.Reversed();
                 return true;

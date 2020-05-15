@@ -5,9 +5,10 @@
 using namespace mbgl;
 
 enum DrawMode {
-    Basic = 0,
-    Triangulated = 1,
-    ConvexPolygons = 2    
+    Outline = 0,
+    BasicShape = 1,
+    Triangulated = 2,
+    ConvexPolygons = 3    
 };
 
 int main() {
@@ -23,7 +24,7 @@ int main() {
     // t.NormalizeOrder();
     // std::cout << t.Area() << "\n";
 
-    DrawMode drawMode = Basic;
+    DrawMode drawMode = Outline;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -49,11 +50,14 @@ int main() {
 
             if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::Num1) {
-                    drawMode = Basic;
+                    drawMode = Outline;
                 } else if (event.key.code == sf::Keyboard::Num2) {
                     p.Triangulate(window);
-                    drawMode = Triangulated;
+                    drawMode = BasicShape;
                 } else if (event.key.code == sf::Keyboard::Num3) {
+                    p.Triangulate(window);
+                    drawMode = Triangulated;
+                } else if (event.key.code == sf::Keyboard::Num4) {
                     p.DivideOnConvex(window);
                     drawMode = ConvexPolygons;
                 }
@@ -67,7 +71,7 @@ int main() {
                 subP.DrawConvex(window);
                 subP.DrawOutline(window);
             }
-        } else {
+        } else if (drawMode != Outline) {
             for (auto t : p.triangles) {
                 t.Draw(window, sf::Color::Green);
                 if (drawMode == Triangulated)
