@@ -64,6 +64,12 @@ namespace mbgl {
             y /= other;
             return *this;
         }
+        bool operator==(const Vector2& other) const {
+            return this->x == other.x && this->y == other.y;
+        }
+        bool operator!=(const Vector2& other) const {
+            return this->x != other.x || this->y != other.y;
+        }
         friend std::ostream& operator<<(std::ostream& stream, const Vector2 other) {
             stream << other.x << " " << other.y;
             return stream;
@@ -142,6 +148,12 @@ namespace mbgl {
             y /= other;
             z /= other;
             return *this;
+        }
+        bool operator==(const Vector3& other) const {
+            return this->x == other.x && this->y == other.y && this->z == other.z;
+        }
+        bool operator!=(const Vector3& other) const {
+            return this->x != other.x || this->y != other.y || this->z != other.z;
         }
         friend std::ostream& operator<<(std::ostream& stream, const Vector3 other) {
             stream << other.x << " " << other.y << " " << other.z;

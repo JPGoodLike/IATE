@@ -614,11 +614,11 @@ namespace mbgl {
             Clear();
         }
 
-        uint32_t Size() {
+        uint32_t Size() const {
             return _size;
         }
 
-        CDLLNode* Root() {
+        CDLLNode* Root() const {
             return _rootNode;
         }
 
@@ -833,6 +833,25 @@ namespace mbgl {
             }
             _rootNode = nullptr;
             _size = 0;
+        }
+
+        CDLList Reversed() const {
+            CDLList reversedList;
+            if (_size == 0) 
+                return reversedList;
+            
+            reversedList._rootNode = new CDLLNode(_rootNode->Get());
+            CDLLNode* cNodeRev = reversedList._rootNode;
+            for (CDLLNode* cNodeSelf = _rootNode->Back(); cNodeSelf != _rootNode; cNodeSelf = cNodeSelf->Back(), cNodeRev = cNodeRev->Next()) {
+                cNodeRev->_nextNode = new CDLLNode(cNodeSelf->Get());
+                cNodeRev->_nextNode->_preNode = cNodeRev;
+            }
+            reversedList._rootNode->_preNode = cNodeRev;
+            cNodeRev->_nextNode = reversedList._rootNode;
+            reversedList._rootNode = reversedList._rootNode->_nextNode;
+
+            reversedList._size = _size;
+            return reversedList;
         }
 
         CDLList& operator=(const CDLList& other) {
