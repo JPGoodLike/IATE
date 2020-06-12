@@ -40,7 +40,7 @@ void NewNode(DataBase& db) {
 void RemoveNode(DataBase& db) {
     std::string name;
     cin >> name;
-    db.Remove(name);
+    db -= name;
 }
 
 void PrintNodes(const DArray<PersonalIBM*> nodes) {
@@ -83,13 +83,13 @@ int NameCmp(PersonalIBM* f, PersonalIBM* s) {
     return  LCmp(f->name, s->name);
 }
 void SortByName(DataBase& db) {
-    PrintNodes(db.GetSorted(NameCmp));
+    PrintNodes(db << NameCmp);
 }
 
 void Get(DataBase& db) {
     std::string name;
     cin >> name;
-    PersonalIBM* node = db.Get(name);
+    PersonalIBM* node = db[name];
     if (node == nullptr) {
         cout << "No such node\n";
         return;
@@ -163,7 +163,7 @@ void Find(DataBase& db) {
 void Save(DataBase& db) {
     std::string fileName = GetInput("File name: ");
     ofstream o_file(fileName);
-    DArray<PersonalIBM*> nodes = db.GetNodes();
+    DArray<PersonalIBM*> nodes = ~db;
     for (int i = 0; i < nodes.Size(); i++) {
         o_file << "b:" << endl;
         o_file << nodes[i]->name << endl;
@@ -180,7 +180,7 @@ void SaveBin(DataBase& db) {
     std::string fileName = GetInput("File name: ");
     ofstream o_file(fileName, std::ios::out | std::ios::binary);
 
-    DArray<PersonalIBM*> nodes = db.GetNodes();
+    DArray<PersonalIBM*> nodes = ~db;
 
     for (int i = 0; i < nodes.Size(); i++) {
         o_file.write(nodes[i]->name.c_str(), sizeof(char) * nodes[i]->name.size() + 1);
@@ -194,7 +194,7 @@ void SaveBin(DataBase& db) {
 }
 
 void Load(DataBase& db) {
-    db.Clear();
+    db--;
     std::string fileName = GetInput("File name: ");
     ifstream i_file(fileName);
     std::string line;
@@ -225,7 +225,7 @@ std::string ReadStringBin(std::ifstream& f_input) {
 }
 
 void LoadBin(DataBase& db) {
-    db.Clear();
+    db--;
     std::string fileName = GetInput("File name: ");
     ifstream i_file(fileName, std::ios::in | std::ios::binary);
 
@@ -274,7 +274,7 @@ int main() {
         } else if (inputS == "s") {
             Set(dataBase);
         } else if (inputS == "d") {
-            PrintNodes(dataBase.GetNodes());
+            PrintNodes(~dataBase);
         } else if (inputS == "w") {
             Save(dataBase);
         } else if (inputS == "wb") {

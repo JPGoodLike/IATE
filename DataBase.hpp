@@ -171,5 +171,26 @@ namespace mbgl {
 
             _nodes.Clear();
         }
+
+        PersonalIBM* operator[](const std::string name) { 
+            return Get(name);
+        }
+
+        void operator-=(const std::string name) {
+            Remove(name);
+        }
+
+        DArray<PersonalIBM*> operator~() {
+            return GetNodes();
+        }
+
+        DArray<PersonalIBM*> operator<<(int (*comparator)(PersonalIBM*, PersonalIBM*)) {
+            return GetSorted(comparator);
+        }
+
+        void operator--(int) {
+            Clear();
+        }
+
     };
 }
